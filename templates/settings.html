@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Account Settings</h5>
+          <p>Username: <strong>{{ current_user.username }}</strong></p>
+          <p>Email: <strong>{{ current_user.email }}</strong></p>
+
+          {% if current_user.totp_secret %}
+            <p><strong>Two-Factor Authentication:</strong> Enabled</p>
+            <form method="post">
+              <input type="hidden" name="action" value="disable_2fa">
+              <button class="btn btn-warning" type="submit">Disable 2FA</button>
+            </form>
+          {% else %}
+            <p><strong>Two-Factor Authentication:</strong> Disabled</p>
+            <form method="post">
+              <input type="hidden" name="action" value="enable_2fa">
+              <button class="btn btn-success" type="submit">Enable 2FA</button>
+            </form>
+          {% endif %}
+
+          {% if provisioning_uri %}
+            <hr>
+            <p>Provisioning URI (scan or add to your authenticator app):</p>
+            <pre>{{ provisioning_uri }}</pre>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
